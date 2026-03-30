@@ -1,0 +1,35 @@
+{
+  "entities": {
+    "HistoryItem": {
+      "title": "History Item",
+      "description": "A record of a plant diagnosis.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique ID of the record." },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the diagnosis was made." },
+        "image": { "type": "string", "description": "Base64 encoded image of the plant." },
+        "plantName": { "type": "string", "description": "Name of the plant." },
+        "isHealthy": { "type": "boolean", "description": "Whether the plant is healthy." },
+        "disease": { "type": "string", "description": "Detected disease, if any." },
+        "confidence": { "type": "number", "description": "Confidence score of the diagnosis." },
+        "description": { "type": "string", "description": "Detailed description of the diagnosis." },
+        "symptoms": { "type": "array", "items": { "type": "string" }, "description": "List of symptoms." },
+        "treatments": {
+          "type": "object",
+          "properties": {
+            "organic": { "type": "array", "items": { "type": "string" } },
+            "chemical": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "prevention": { "type": "array", "items": { "type": "string" }, "description": "List of prevention steps." }
+      },
+      "required": ["id", "timestamp", "image", "plantName", "isHealthy"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/history/{historyId}": {
+      "schema": "HistoryItem",
+      "description": "User's plant diagnosis history."
+    }
+  }
+}

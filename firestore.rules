@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: /users/{userId}/history
+    // Document ID: {historyId}
+    // Fields:
+    //   - id: string (required)
+    //   - timestamp: string (required, ISO 8601)
+    //   - image: string (required, base64)
+    //   - plantName: string (required)
+    //   - isHealthy: boolean (required)
+    //   - disease: string (optional)
+    //   - confidence: number (optional)
+    //   - description: string (optional)
+    //   - symptoms: list (optional)
+    //   - treatments: map (optional)
+    //   - prevention: list (optional)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidHistoryItem(data) {
+      return data.keys().hasAll(['id', 'timestamp', 'image', 'plantName', 'isHealthy']) &&
+             data.id is string && data.id.size() > 0 && data.id.size() < 100 &&
+             data.timestamp is string && data.timestamp.matches("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.*Z?$") &&
+             data.image is string && data.image.size() > 0 && data.image.size() < 2000000 && // Limit image size to ~2MB
+             data.plantName is string && data.plantName.size() > 0 && data.plantName.size() < 100 &&
+             data.isHealthy is bool &&
+             (!('disease' in data) || (data.disease is string && data.disease.size() < 100)) &&
+             (!('confidence' in data) || (data.confidence is number && data.confidence >= 0 && data.confidence <= 1)) &&
+             (!('description' in data) || (data.description is string && data.description.size() < 5000)) &&
+             (!('symptoms' in data) || (data.symptoms is list && data.symptoms.size() < 50)) &&
+             (!('treatments' in data) || (data.treatments is map && data.treatments.keys().hasOnly(['organic', 'chemical']))) &&
+             (!('prevention' in data) || (data.prevention is list && data.prevention.size() < 50));
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    match /users/{userId}/history/{historyId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidHistoryItem(request.resource.data);
+      allow update: if isOwner(userId) && isValidHistoryItem(request.resource.data);
+      allow delete: if isOwner(userId);
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

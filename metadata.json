@@ -1,0 +1,7 @@
+{
+  "name": "EcoMed - AI Plant Doctor",
+  "description": "An intelligent plant health and disease diagnosis platform. Use your camera to identify plant diseases and get expert treatment advice from AI, designed to be accessible for everyone from families to farmers.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

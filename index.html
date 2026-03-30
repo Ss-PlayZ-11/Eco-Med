@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231EEA92' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 20A7 7 0 0 1 4 13V4a2 2 0 0 1 2-2h1' /%3E%3Cpath d='M15 10a2.5 2.5 0 0 1-5 0c0-2.5 5-2.5 5 0' /%3E%3Cpath d='M14 13a7 7 0 0 1 7-7h-1' /%3E%3C/svg%3E" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoMed - AI Plant Pathologist</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Space Grotesk', 'sans-serif'],
+            },
+            colors: {
+              'brand-dark': '#0f172a',
+              'brand-surface': '#1e293b',
+              'brand-primary': '#10b981',
+              'brand-secondary': '#059669',
+              'brand-accent': '#34d399',
+              'brand-text': '#f8fafc',
+              'brand-text-muted': '#94a3b8',
+              'brand-light-text': '#0f172a',
+              'brand-light-text-muted': '#475569',
+              'brand-light-bg': '#f8fafc',
+            },
+            keyframes: {
+              'liquid': {
+                '0%, 100%': { 'border-radius': '60% 40% 30% 70% / 60% 30% 70% 40%' },
+                '50%': { 'border-radius': '30% 60% 70% 40% / 50% 60% 30% 60%' },
+              },
+              'drift': {
+                '0%': { transform: 'translate(0, 0) rotate(0deg)' },
+                '50%': { transform: 'translate(100px, 50px) rotate(180deg)' },
+                '100%': { transform: 'translate(0, 0) rotate(360deg)' },
+              },
+              'glitch-scan': {
+                '0%': { transform: 'translateY(-100%)' },
+                '100%': { transform: 'translateY(100%)' },
+              },
+              'surge': {
+                '0%': { transform: 'scale(1)', opacity: '0.5' },
+                '100%': { transform: 'scale(2)', opacity: '0' },
+              },
+              'float-subtle': {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              'reveal': {
+                '0%': { clipPath: 'inset(100% 0 0 0)' },
+                '100%': { clipPath: 'inset(0 0 0 0)' },
+              },
+              'haptic-spring': {
+                '0%': { transform: 'scale(1)' },
+                '30%': { transform: 'scale(0.92)' },
+                '60%': { transform: 'scale(1.05)' },
+                '100%': { transform: 'scale(1)' },
+              },
+              'chromatic-pulse': {
+                '0%': { textShadow: '2px 0 0 #00F0FF, -2px 0 0 #7000FF', transform: 'translateX(0)' },
+                '20%': { textShadow: '-2px 0 0 #00F0FF, 2px 0 0 #7000FF', transform: 'translateX(-1px)' },
+                '40%': { textShadow: '2px 0 0 #00F0FF, -2px 0 0 #7000FF', transform: 'translateX(1px)' },
+                '100%': { textShadow: 'none', transform: 'translateX(0)' }
+              },
+              'ring-burst': {
+                '0%': { transform: 'scale(1)', opacity: '0.5', borderWidth: '10px' },
+                '100%': { transform: 'scale(1.5)', opacity: '0', borderWidth: '1px' }
+              },
+              'scale-in': {
+                '0%': { opacity: '0', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              },
+              'fade-in-up': {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            },
+            animation: {
+              'liquid': 'liquid 8s ease-in-out infinite',
+              'drift': 'drift 20s linear infinite',
+              'glitch-scan': 'glitch-scan 4s linear infinite',
+              'surge': 'surge 0.6s ease-out forwards',
+              'float-subtle': 'float-subtle 4s ease-in-out infinite',
+              'reveal': 'reveal 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards',
+              'spin-slow': 'spin 20s linear infinite',
+              'pulse-slow': 'pulse 4s ease-in-out infinite',
+              'haptic': 'haptic-spring 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              'burst': 'ring-burst 0.5s ease-out forwards',
+              'scale-in': 'scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'fade-in-up': 'fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root {
+        scrollbar-width: thin;
+        scrollbar-color: #059669 #020617;
+      }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-thumb { background: #059669; border-radius: 10px; }
+
+      body { 
+        background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-color: #f8fafc;
+        transition: background-color 0.3s ease;
+        overflow-x: hidden;
+      }
+      html.dark body {
+        background-image: url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=2000&auto=format&fit=crop');
+        background-color: #020617;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(248, 250, 252, 0.8), rgba(248, 250, 252, 0.4));
+        z-index: -1;
+      }
+
+      html.dark body::before {
+        background: linear-gradient(to bottom, rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.6));
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0.03;
+        pointer-events: none;
+        z-index: 50;
+      }
+
+      .btn-click-effect {
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-click-effect::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.4);
+        opacity: 0;
+        border-radius: 100%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+      .btn-click-effect:active::after {
+        animation: surge 0.4s ease-out;
+      }
+      
+      .btn-click-effect:active {
+        animation: haptic-spring 0.3s ease;
+      }
+
+      .glass-v2 {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(5, 150, 105, 0.2);
+        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .dark .glass-v2 {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(5, 150, 105, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      }
+
+      .text-glow-green {
+        text-shadow: 0 0 20px rgba(5, 150, 105, 0.5);
+      }
+
+      .dna-strand {
+        background-image: repeating-linear-gradient(45deg, rgba(5, 150, 105, 0.05) 0px, rgba(5, 150, 105, 0.05) 1px, transparent 1px, transparent 10px);
+      }
+
+      .hud-line {
+        position: absolute;
+        background: linear-gradient(90deg, transparent, rgba(5, 150, 105, 0.6), transparent);
+        height: 2px;
+        width: 100%;
+        pointer-events: none;
+        z-index: 10;
+      }
+      
+      .click-burst-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #059669;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 100;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="selection:bg-brand-primary/30 text-brand-light-text dark:text-brand-text">
+    <div class="noise-overlay"></div>
+    <div class="fixed inset-0 opacity-20 pointer-events-none dna-strand"></div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
