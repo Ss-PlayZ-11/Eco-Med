@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">EcoMed - AI Plant Doctor</string>
+    <string name="title_activity_main">EcoMed - AI Plant Doctor</string>
+    <string name="package_name">com.ecomed.aiplantdoctor</string>
+    <string name="custom_url_scheme">com.ecomed.aiplantdoctor</string>
+</resources>
